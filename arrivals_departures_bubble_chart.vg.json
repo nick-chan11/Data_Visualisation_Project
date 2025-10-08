@@ -14,7 +14,16 @@
       "bind": {
         "input": "select",
         "options": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-        "labels": ["2017","2018","2019", "2020", "2021", "2022", "2023", "2024"],
+        "labels": [
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ],
         "name": "Year: "
       }
     }
@@ -22,44 +31,73 @@
   "transform": [
     { "filter": "datum.Year == YearSelect" },
     {
-      "aggregate": [{ "op": "sum", "field": "Aircraft_Trips", "as": "Departures"}],
+      "aggregate": [
+        { "op": "sum", "field": "Aircraft_Trips", "as": "Departures" }
+      ],
       "groupby": ["City1"]
+    },
+    {
+      "calculate": "datum.City1 + ' (' + format(datum.Departures / 1000, '.1f') + 'k' + ')'",
+      "as": "CityAndTrips"
     }
   ],
-  "mark": {
-    "type": "circle",
-    "opacity": 0.8
-  },
-  "encoding": {
-    "x": {
-      "field": "City1",
-      "type": "nominal",
-      "title": "Origin City",
-      "sort": "-y"
-    },
-    "y": {
-      "field": "Departures",
-      "type": "quantitative",
-      "title": "Number of Departures",
-      "axis": {
-        "labels": false,
-        "grid": false
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "opacity": 0.8
+      },
+      "encoding": {
+        "x": {
+          "field": "City1",
+          "type": "nominal",
+          "title": "Origin City",
+          "sort": "-y",
+          "axis": { "labels": false }
+        },
+        "y": {
+          "field": "Departures",
+          "type": "quantitative",
+          "title": "Number of Departures",
+          "axis": {
+            "labels": false,
+            "grid": false
+          }
+        },
+        "size": {
+          "field": "Departures",
+          "type": "quantitative",
+          "title": "Number of Departures",
+          "scale": { "range": [100, 2000] }
+        },
+        "color": {
+          "field": "City1",
+          "type": "nominal",
+          "legend": null
+        },
+        "tooltip": [
+          { "field": "City1", "type": "nominal", "title": "Origin City" },
+          {
+            "field": "Departures",
+            "type": "quantitative",
+            "title": "Departures"
+          }
+        ]
       }
     },
-    "size": {
-      "field": "Departures",
-      "type": "quantitative",
-      "title": "Number of Departures",
-      "scale": { "range": [100, 2000] }
-    },
-    "color": {
-      "field": "City1",
-      "type": "nominal",
-      "legend": null
-    },
-    "tooltip": [
-      { "field": "City1", "type": "nominal", "title": "Origin City" },
-      { "field": "Departures", "type": "quantitative", "title": "Departures" }
-    ]
-  }
+    {
+      "mark": {
+        "type": "text",
+        "dx": 0,
+        "dy": -25,
+        "fontSize": 12,
+        "color": "black"
+      },
+      "encoding": {
+        "x": { "field": "City1", "type": "nominal" },
+        "y": { "field": "Departures", "type": "quantitative" },
+        "text": { "field": "CityAndTrips", "type": "nominal" }
+      }
+    }
+  ]
 }
