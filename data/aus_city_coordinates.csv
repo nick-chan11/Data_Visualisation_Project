@@ -1,0 +1,9 @@
+﻿city,lat,lng,country,iso2,admin_name,capital,population,population_proper
+Melbourne,-37.8142,144.9631,Australia,AU,Victoria,admin,5031195,5031195
+Sydney,-33.8678,151.21,Australia,AU,New South Wales,admin,4840600,4840600
+Brisbane,-27.4678,153.0281,Australia,AU,Queensland,admin,2360241,2360241
+Perth,-31.9559,115.8606,Australia,AU,Western Australia,admin,2141834,2141834
+Adelaide,-34.9275,138.6,Australia,AU,South Australia,admin,1295714,1295714
+Canberra,-35.2931,149.1269,Australia,AU,Australian Capital Territory,primary,381488,381488
+Hobart,-42.8806,147.325,Australia,AU,Tasmania,admin,197451,197451
+Darwin,-12.4381,130.8411,Australia,AU,Northern Territory,admin,139902,139902
