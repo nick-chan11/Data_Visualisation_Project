@@ -86,7 +86,7 @@
     },
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/aus_city_coordinates.csv"
+        "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/aus_city_coordinates.csv"
       },
       "mark": {
         "type": "text",
@@ -105,7 +105,7 @@
     },
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/aus_city_coordinates.csv"
+        "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/aus_city_coordinates.csv"
       },
       "mark": {"type": "point", "color": "red", "size": 100},
       "encoding": {
