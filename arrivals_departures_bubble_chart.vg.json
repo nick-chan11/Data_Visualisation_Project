@@ -5,7 +5,7 @@
   "title": "Number of Outgoing Domestic Departures by City",
   "data": {
     "name": "flight_paths",
-    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/dom_citypairs.csv"
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/dom_citypairs.csv"
   },
   "params": [
     {
