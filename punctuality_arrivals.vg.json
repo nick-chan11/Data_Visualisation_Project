@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 450,
+  "title": "On-time Performance of Domestic Arrivals",
+  "data": {
+    "name": "otp_data",
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
+  },
+  "params": [
+    {
+      "name": "YearSelect",
+      "value": 2025,
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2025,
+        "step": 1,
+        "name": "Year: "
+      }
+    },
+    {
+      "name": "PerfType",
+      "value": "Arrivals",
+      "bind": {
+        "input": "select",
+        "options": ["Arrivals", "Departures"],
+        "labels": ["Arrivals", "Departures"],
+        "name": "Change between Departures/Arrivals: "
+      }
+    }
+  ],
+
+  "transform": [
+    { "filter": "datum.Year == YearSelect" },
+    {
+      "fold": [
+        "Arrivals_On_Time",
+        "Arrivals_Delayed",
+        "Departures_On_Time",
+        "Departures_Delayed"
+      ],
+      "as": ["Status", "Count"]
+    },
+    {
+      "calculate": "indexof(datum.Status, 'Arrivals') == 0 ? 'Arrivals' : 'Departures'",
+      "as": "PerfType_Label"
+    },
+    {
+      "filter": "datum.PerfType_Label == PerfType"
+    },
+    {
+      "calculate": "indexof(datum.Status, 'On_Time') > -1 ? 'On Time' : 'Delayed'",
+      "as": "Status_Label"
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "Arriving_Port",
+      "type": "nominal",
+      "title": "Airport/City"
+    },
+    "xOffset": { "field": "Status_Label" },
+    "y": {
+      "aggregate": "sum",
+      "field": "Count",
+      "type": "quantitative",
+      "title": "Number of Flights"
+    },
+    "color": {
+      "field": "Status_Label",
+      "type": "nominal",
+      "title": "Status",
+      "scale": { "range": ["#1f77b4", "#ff7f0e"] }
+    },
+    "tooltip": [
+      { "field": "Arriving_Port", "type": "nominal", "title": "Airport/City" },
+      { "field": "Status_Label", "type": "nominal", "title": "Status" },
+      { "aggregate": "sum", "field": "Count", "type": "quantitative", "title": "Flights" }
+    ]
+  }
+}
