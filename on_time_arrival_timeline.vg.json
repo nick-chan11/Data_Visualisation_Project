@@ -1,0 +1,162 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "On-Time Departure/Arrival Performance Over Time by City",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
+  },
+  "params": [
+    {
+      "name": "PerfType",
+      "value": "Arrivals",
+      "bind": {
+        "input": "select",
+        "options": ["Arrivals", "Departures"],
+        "labels": ["Arrivals", "Departures"],
+        "name": "Performance: "
+      }
+    },
+    {
+      "name": "CitySelect",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "Adelaide",
+          "Brisbane",
+          "Canberra",
+          "Darwin",
+          "Hobart",
+          "Melbourne",
+          "Perth",
+          "Sydney"
+        ],
+        "labels": [
+          "All",
+          "Adelaide",
+          "Brisbane",
+          "Canberra",
+          "Darwin",
+          "Hobart",
+          "Melbourne",
+          "Perth",
+          "Sydney"
+        ],
+        "name": "Filter City: "
+      }
+    }
+  ],
+  "vconcat": [
+    {
+      "width": 800,
+      "height": 400,
+      "transform": [
+        {
+          "calculate": "PerfType == 'Arrivals' ? datum.Arrivals_On_Time / (datum.Sectors_Flown) : datum.Departures_On_Time / (datum.Sectors_Flown)",
+          "as": "OnTimePerformance"
+        },
+        {
+          "filter": "CitySelect == 'All' || datum.Arriving_Port == CitySelect"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "mean",
+              "field": "OnTimePerformance",
+              "as": "AvgOnTimePerformance"
+            }
+          ],
+          "groupby": ["Year", "Arriving_Port"]
+        }
+      ],
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "quantitative",
+          "title": "Year",
+          "scale": { "domain": { "param": "brush" } }
+        },
+        "y": {
+          "field": "AvgOnTimePerformance",
+          "type": "quantitative",
+          "title": "On-Time Performance (%)",
+          "axis": { "format": "%" }
+        },
+        "color": {
+          "field": "Arriving_Port",
+          "type": "nominal",
+          "title": "City"
+        },
+        "tooltip": [
+          { "field": "Arriving_Port", "type": "nominal", "title": "City" },
+          { "field": "Year", "type": "ordinal", "title": "Year" },
+          {
+            "field": "AvgOnTimePerformance",
+            "type": "quantitative",
+            "title": "On-Time Performance",
+            "format": ".1%"
+          }
+        ]
+      }
+    },
+    {
+      "width": 800,
+      "height": 80,
+      "transform": [
+        {
+          "calculate": "PerfType == 'Arrivals' ? datum.Arrivals_On_Time / (datum.Sectors_Flown) : datum.Departures_On_Time / (datum.Sectors_Flown)",
+          "as": "OnTimePerformance"
+        },
+        {
+          "filter": "CitySelect == 'All' || datum.Arriving_Port == CitySelect"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "mean",
+              "field": "OnTimePerformance",
+              "as": "AvgOnTimePerformance"
+            }
+          ],
+          "groupby": ["Year", "Arriving_Port"]
+        }
+      ],
+      "mark": "line",
+      "params": [
+        {
+          "name": "brush",
+          "select": { "type": "interval", "encodings": ["x"] }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "quantitative",
+          "title": "Year"
+        },
+        "y": {
+          "field": "AvgOnTimePerformance",
+          "type": "quantitative",
+          "title": "On-Time Performance (%)",
+          "axis": { "format": "%" }
+        },
+        "color": {
+          "field": "Arriving_Port",
+          "type": "nominal",
+          "title": "City"
+        },
+        "tooltip": [
+          { "field": "Arriving_Port", "type": "nominal", "title": "City" },
+          { "field": "Year", "type": "ordinal", "title": "Year" },
+          {
+            "field": "AvgOnTimePerformance",
+            "type": "quantitative",
+            "title": "On-Time Performance",
+            "format": ".1%"
+          }
+        ]
+      }
+    }
+  ]
+}
