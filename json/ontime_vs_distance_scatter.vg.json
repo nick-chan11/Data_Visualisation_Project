@@ -1,0 +1,100 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 700,
+  "height": 500,
+  "title": "Australian Domestic Flight On-Time Performance vs Route Distance",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
+  },
+  "params": [
+    {
+      "name": "PerfType",
+      "value": "Arrivals",
+      "bind": {
+        "input": "select",
+        "options": ["Arrivals", "Departures"],
+        "labels": ["Arrivals", "Departures"],
+        "name": "Performance Type: "
+      }
+    },
+    {
+      "name": "YearFilter",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2024,
+        "step": 1,
+        "name": "Year: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.Year == YearFilter"
+    },
+    {
+      "calculate": "PerfType == 'Arrivals' ? datum.Arrivals_On_Time / datum.Sectors_Flown : datum.Departures_On_Time / datum.Sectors_Flown",
+      "as": "OnTimePerformance"
+    },
+    {
+      "calculate": "sqrt(pow(datum.Longitude_City2 - datum.Longitude_City1, 2) + pow(datum.Latitude_City2 - datum.Latitude_City1, 2)) * 111",
+      "as": "RouteDistance"
+    },
+    {
+      "filter": "datum.OnTimePerformance > 0 && datum.RouteDistance > 0"
+    },
+    {
+      "aggregate": [
+        {"op": "mean", "field": "OnTimePerformance", "as": "AvgOnTimePerformance"},
+        {"op": "mean", "field": "RouteDistance", "as": "AvgDistance"},
+        {"op": "sum", "field": "Sectors_Flown", "as": "TotalFlights"}
+      ],
+      "groupby": ["Route", "Departing_Port", "Arriving_Port"]
+    }
+  ],
+  "mark": {
+    "type": "circle",
+    "opacity": 0.7,
+    "stroke": "black",
+    "strokeWidth": 0.5
+  },
+  "encoding": {
+    "x": {
+      "field": "AvgDistance",
+      "type": "quantitative",
+      "title": "Route Distance (km)",
+      "scale": {"zero": false}
+    },
+    "y": {
+      "field": "AvgOnTimePerformance",
+      "type": "quantitative",
+      "title": "On-Time Performance (%)",
+      "axis": {"format": "%"},
+      "scale": {"zero": false}
+    },
+    "size": {
+      "field": "TotalFlights",
+      "type": "quantitative",
+      "title": "Total Flights",
+      "scale": {"range": [50, 400]}
+    },
+    "color": {
+      "field": "AvgOnTimePerformance",
+      "type": "quantitative",
+      "title": "On-Time %",
+      "scale": {
+        "scheme": "viridis",
+        "reverse": false
+      }
+    },
+    "tooltip": [
+      {"field": "Route", "type": "nominal", "title": "Route"},
+      {"field": "Departing_Port", "type": "nominal", "title": "From"},
+      {"field": "Arriving_Port", "type": "nominal", "title": "To"},
+      {"field": "AvgDistance", "type": "quantitative", "title": "Distance (km)", "format": ".0f"},
+      {"field": "AvgOnTimePerformance", "type": "quantitative", "title": "On-Time Performance", "format": ".1%"},
+      {"field": "TotalFlights", "type": "quantitative", "title": "Total Flights", "format": ","}
+    ]
+  }
+}
