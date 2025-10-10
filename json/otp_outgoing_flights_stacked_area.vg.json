@@ -1,0 +1,128 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 500,
+  "title": "Outgoing Flight Sectors by Destination from Selected City",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
+  },
+  "params": [
+    {
+      "name": "CityFilter",
+      "value": "Melbourne",
+      "bind": {
+        "input": "select",
+        "options": [
+          "Sydney",
+          "Melbourne", 
+          "Brisbane",
+          "Perth",
+          "Adelaide",
+          "Canberra",
+          "Hobart",
+          "Darwin"
+        ],
+        "labels": [
+          "Sydney",
+          "Melbourne",
+          "Brisbane", 
+          "Perth",
+          "Adelaide",
+          "Canberra",
+          "Hobart",
+          "Darwin"
+        ],
+        "name": "Focus City: "
+      }
+    },
+    {
+      "name": "minYear",
+      "value": 2004,
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2024,
+        "step": 1,
+        "name": "Min Year (2004-2024): "
+      }
+    },
+    {
+      "name": "maxYear", 
+      "value": 2024,
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2024,
+        "step": 1,
+        "name": "Max Year (2004-2024): "
+      }
+    },
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "mouseover"}
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.Departing_Port == CityFilter"
+    },
+    {
+      "aggregate": [
+        {"op": "sum", "field": "Sectors_Flown", "as": "TotalSectors"}
+      ],
+      "groupby": ["Year", "Departing_Port", "Arriving_Port"]
+    },
+    {
+      "filter": "datum.Year >= 2004"
+    },
+    {
+      "filter": "datum.Year >= minYear && datum.Year <= maxYear"
+    }
+  ],
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone",
+    "opacity": 0.8
+  },
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "title": "Year",
+      "axis": {"labelAngle": -45}
+    },
+    "y": {
+      "field": "TotalSectors",
+      "type": "quantitative",
+      "title": "Number of Flight Sectors",
+      "stack": "zero",
+      "axis": {"format": ".1~s"}
+    },
+    "color": {
+      "field": "Arriving_Port",
+      "type": "nominal",
+      "title": "Destination City",
+      "scale": {
+        "range": ["#3498db", "#e67e22", "#9b59b6", "#f39c12", "#1abc9c", "#34495e", "#f1c40f", "#95a5a6", "#8e44ad", "#16a085"]
+      }
+    },
+    "opacity": {
+      "condition": {"param": "highlight", "value": 1.0},
+      "value": 0.3
+    },
+    "stroke": {
+      "condition": {"param": "highlight", "value": "black"},
+      "value": "transparent"
+    },
+    "strokeWidth": {
+      "condition": {"param": "highlight", "value": 0.5},
+      "value": 0
+    },
+    "tooltip": [
+      {"field": "Departing_Port", "type": "nominal", "title": "From"},
+      {"field": "Arriving_Port", "type": "nominal", "title": "To"},
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {"field": "TotalSectors", "type": "quantitative", "title": "Flight Sectors", "format": ","}
+    ]
+  }
+}
