@@ -1,0 +1,87 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 500,
+  "title": "Outgoing Domestic Flights by Destination from Selected City",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/dom_citypairs.csv"
+  },
+  "params": [
+    {
+      "name": "CityFilter",
+      "value": "SYDNEY",
+      "bind": {
+        "input": "select",
+        "options": [
+          "SYDNEY",
+          "MELBOURNE", 
+          "BRISBANE",
+          "PERTH",
+          "ADELAIDE",
+          "CANBERRA",
+          "HOBART",
+          "DARWIN"
+        ],
+        "labels": [
+          "Sydney",
+          "Melbourne",
+          "Brisbane", 
+          "Perth",
+          "Adelaide",
+          "Canberra",
+          "Hobart",
+          "Darwin"
+        ],
+        "name": "Focus City: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.City1 == CityFilter"
+    },
+    {
+      "aggregate": [
+        {"op": "sum", "field": "Aircraft_Trips", "as": "TotalFlights"}
+      ],
+      "groupby": ["Year", "City1", "City2"]
+    },
+    {
+      "filter": "datum.Year >= 1990"
+    }
+  ],
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone",
+    "opacity": 0.8
+  },
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "title": "Year",
+      "axis": {"labelAngle": -45}
+    },
+    "y": {
+      "field": "TotalFlights",
+      "type": "quantitative",
+      "title": "Number of Outgoing Flights",
+      "stack": "zero",
+      "axis": {"format": ","}
+    },
+    "color": {
+      "field": "City2",
+      "type": "nominal",
+      "title": "Destination City",
+      "scale": {
+        "range": ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+      }
+    },
+    "tooltip": [
+      {"field": "City1", "type": "nominal", "title": "From"},
+      {"field": "City2", "type": "nominal", "title": "To"},
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {"field": "TotalFlights", "type": "quantitative", "title": "Outgoing Flights", "format": ","}
+    ]
+  }
+}
