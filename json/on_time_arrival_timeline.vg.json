@@ -1,5 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "text": {"font": "Segoe UI, Arial, sans-serif"},
+    "axis": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "title": {"font": "Segoe UI, Arial, sans-serif"}
+  },
   "title": "On-Time Departure/Arrival Performance Over Time by City",
   "data": {
     "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"

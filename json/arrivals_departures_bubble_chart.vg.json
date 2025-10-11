@@ -1,5 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "text": {"font": "Segoe UI, Arial, sans-serif"},
+    "axis": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "title": {"font": "Segoe UI, Arial, sans-serif"}
+  },
   "width": 350,
   "height": 300,
   "title": "Number of Outgoing Domestic Departures by City",
@@ -91,6 +97,7 @@
         "dx": 0,
         "dy": -25,
         "fontSize": 12,
+        "font": "Segoe UI, Arial, sans-serif",
         "color": "black"
       },
       "encoding": {

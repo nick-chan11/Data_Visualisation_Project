@@ -1,6 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 900,
+  "config": {
+    "text": {"font": "Segoe UI, Arial, sans-serif"},
+    "axis": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "title": {"font": "Segoe UI, Arial, sans-serif"}
+  },
+  "width": 800,
   "height": 350,
   "title": "Frequency of Domestic Flights across Australia in 2024",
   "projection": {"type": "mercator", "center": [134, -25]},
@@ -62,7 +68,9 @@
           "scale": {"range": [1, 10]},
           "legend": {
             "labelFontSize": 14,
+            "labelFont": "Segoe UI, Arial, sans-serif",
             "titleFontSize": 14,
+            "titleFont": "Segoe UI, Arial, sans-serif",
             "symbolSize": 2000,
             "symbolType": "square"
           }
@@ -94,6 +102,7 @@
         "baseline": "bottom",
         "dx": 4,
         "fontSize": 16,
+        "font": "Segoe UI, Arial, sans-serif",
         "color": "black"
       },
       "encoding": {
