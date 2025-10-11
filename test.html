@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+    
+    <script src="js/live_page.js"></script>
+    
+    <title>FIT3179 A2</title>
+    <style>
+      body {
+          font-family: 'Segoe UI', Arial, sans-serif;
+          background: #f7f9fa;
+          margin: 0;
+          padding: 0;
+          color: #222;
+        }
+      h1 {
+        text-align: center;
+        margin-top: 32px;
+        font-size: 2.5em;
+        color: #1a4d80;
+        letter-spacing: 1px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        padding: 32px 40px 40px 40px;
+      }
+      h2 {
+        color: #1a4d80;
+        margin-top: 36px;
+        margin-bottom: 16px;
+        font-size: 1.5em;
+        border-bottom: 2px solid #e0e7ef;
+        padding-bottom: 6px;
+      }
+      h3 {
+        color: #2c5282;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        font-size: 1.2em;
+        font-weight: 600;
+      }
+      .chart-container {
+        margin: 0 auto 32px auto;
+        background: #f4f8fb;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        padding: 20px;
+        min-height: 420px;
+        max-width: 100%;
+        overflow: visible;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .chart-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .chart-half {
+        flex: 1;
+        min-width: 400px;
+        max-width: 500px;
+        background: #f4f8fb;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        padding: 20px;
+        min-height: 380px;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .section-intro {
+        background: #e8f4f8;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #1a4d80;
+      }
+      .section-intro p {
+        margin: 0;
+        color: #2d3748;
+        line-height: 1.6;
+      }
+      .chart-half h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      #flight_map, #bubble_chart, #timeline_chart, #scatter_chart, #stacked_area_chart, #punctuality_chart {
+        width: 100%;
+        height: auto;
+      }
+      @media (max-width: 1200px) {
+        .container {
+          max-width: 95%;
+          padding: 20px;
+        }
+        .chart-half {
+          min-width: 100%;
+          max-width: 100%;
+        }
+        .chart-row {
+          flex-direction: column;
+        }
+      }
+      @media (max-width: 1250px) {
+        .container {
+          padding: 16px 4vw 24px 4vw;
+        }
+        #flight_map, #bubble_chart, #timeline_chart, #scatter_chart, #stacked_area_chart, #punctuality_chart {
+          padding: 12px;
+          min-height: 350px;
+        }
+        .chart-container {
+          padding: 12px;
+          min-height: 350px;
+        }
+        .chart-half {
+          padding: 12px;
+          min-height: 350px;
+        }
+      }
+    </style>
+
+</head>
+  
+  <body>
+    <div class="container">
+    <h1>Australian Domestic Flights: On-Time Performance and Key Statistics</h1>
+
+    <!-- Overview Section -->
+    <div class="section-intro">
+      <p>This dashboard explores Australian domestic flight performance from 2004-2024, analyzing route networks, punctuality trends, and operational statistics across major cities. Interactive visualizations reveal patterns in flight volumes, on-time performance, and the impact of external factors like COVID-19.</p>
+    </div>
+
+    <!-- Network and Volume Analysis -->
+    <h2>Flight Network & Route Analysis</h2>
+    
+    <h3>Route Network Map</h3>
+    <div class="chart-container" id="flight_map"></div>
+    
+    <div class="chart-row">
+      <div class="chart-half">
+        <h3>Flight Volume by City</h3>
+        <div id="bubble_chart"></div>
+      </div>
+      <div class="chart-half">
+        <h3>Route Distribution</h3>
+        <div id="stacked_area_chart"></div>
+      </div>
+    </div>
+
+    <!-- Performance Analysis -->
+    <h2>On-Time Performance Analysis</h2>
+    
+    <h3>Performance Trends Over Time</h3>
+    <div class="chart-container" id="timeline_chart"></div>
+    
+    <div class="chart-row">
+      <div class="chart-half">
+        <h3>Performance vs Distance</h3>
+        <div id="scatter_chart"></div>
+      </div>
+      <div class="chart-half">
+        <h3>Punctuality by Route</h3>
+        <div id="punctuality_chart"></div>
+      </div>
+    </div>
+
+  </div>
+  </body>
+
+  </html>
