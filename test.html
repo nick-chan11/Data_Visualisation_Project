@@ -1,189 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for proper encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
+    <!-- Vega-Lite visualization libraries for interactive charts -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
-    
+
+    <!-- Custom JavaScript file to embed all visualization charts -->
     <script src="js/live_page.js"></script>
-    
+
     <title>FIT3179 A2</title>
     <style>
+      /* Global body styling with gradient background */
       body {
-          font-family: 'Segoe UI', Arial, sans-serif;
-          background: #f7f9fa;
-          margin: 0;
-          padding: 0;
-          color: #222;
-        }
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #f7f9fa 0%, #e8f4f8 100%);
+        margin: 0;
+        padding: 0;
+        color: #222;
+        min-height: 100vh; /* Ensures full viewport height */
+      }
+
+      /* Main header styling with fade-in animation */
       h1 {
         text-align: center;
         margin-top: 32px;
         font-size: 2.5em;
-        color: #1a4d80;
+        color: #1a4d80; /* Primary blue color */
         letter-spacing: 1px;
+        text-shadow: 0 2px 4px rgba(26, 77, 128, 0.1); /* Subtle shadow for depth */
+        animation: fadeInDown 0.8s ease-out; /* Entrance animation */
       }
+
+      /* Animation keyframes for header entrance effect */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px); /* Starts above viewport */
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0); /* Ends in normal position */
+        }
+      }
+
+      /* Animation keyframes for content entrance effect */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px); /* Starts below viewport */
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0); /* Ends in normal position */
+        }
+      }
+
+      /* Main container with enhanced styling and animations */
       .container {
-        max-width: 1200px;
-        margin: 40px auto;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-        padding: 32px 40px 40px 40px;
+        max-width: 1200px; /* Maximum width for readability */
+        margin: 40px auto; /* Centers container horizontally */
+        background: linear-gradient(145deg, #ffffff 0%, #f8feff 100%); /* Subtle gradient */
+        border-radius: 16px; /* Rounded corners */
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
+          0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6); /* Layered shadows for depth */
+        padding: 32px 40px 40px 40px; /* Internal spacing */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+        animation: fadeInUp 0.8s ease-out 0.2s both; /* Delayed entrance animation */
       }
+
+      /* Section headers with interactive underline animation */
       h2 {
-        color: #1a4d80;
+        color: #1a4d80; /* Primary blue color */
         margin-top: 36px;
         margin-bottom: 16px;
         font-size: 1.5em;
-        border-bottom: 2px solid #e0e7ef;
-        padding-bottom: 6px;
+        border-bottom: 3px solid transparent; /* Hidden border for animation */
+        border-image: linear-gradient(90deg, #1a4d80, #e0e7ef) 1; /* Gradient border */
+        padding-bottom: 8px;
+        position: relative; /* For pseudo-element positioning */
+        overflow: hidden; /* Hides animation overflow */
       }
+
+      /* Animated underline effect for section headers */
+      h2::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0; /* Starts with no width */
+        height: 3px;
+        background: linear-gradient(90deg, #1a4d80, #4a90c2); /* Gradient underline */
+        transition: width 0.6s ease-in-out; /* Smooth animation */
+      }
+
+      /* Hover effect expands underline to full width */
+      h2:hover::before {
+        width: 100%;
+      }
+
+      /* Chart section titles */
       h3 {
-        color: #2c5282;
+        color: #2c5282; /* Secondary blue color */
         margin-top: 24px;
         margin-bottom: 12px;
         font-size: 1.2em;
         font-weight: 600;
+        position: relative;
       }
+
+      /* Full-width chart containers with hover effects */
       .chart-container {
-        margin: 0 auto 32px auto;
-        background: #f4f8fb;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        padding: 20px;
-        min-height: 420px;
-        width: 100%;
-        overflow: visible;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        margin: 0 auto 32px auto; /* Centers container with bottom margin */
+        background: linear-gradient(145deg, #f4f8fb 0%, #fafcff 100%); /* Light gradient background */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06),
+          0 1px 4px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8); /* Multi-layer shadows */
+        padding: 24px; /* Internal spacing */
+        min-height: 420px; /* Minimum height for consistency */
+        width: 100%; /* Full width of parent */
+        overflow: visible; /* Allows chart overflow if needed */
+        display: flex; /* Flexbox for centering */
+        justify-content: center; /* Centers content horizontally */
+        align-items: center; /* Centers content vertically */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+        transition: all 0.3s ease; /* Smooth hover transitions */
+        position: relative; /* For pseudo-element positioning */
       }
+
+      /* Decorative top border for chart containers */
+      .chart-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #1a4d80, transparent); /* Gradient line */
+        border-radius: 12px 12px 0 0; /* Rounded top corners */
+      }
+
+      /* Hover effect for full-width chart containers */
+      .chart-container:hover {
+        transform: translateY(-6px); /* Lifts container up */
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12),
+          0 8px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8); /* Enhanced shadows */
+      }
+
+      /* Flexbox row for side-by-side chart placement */
       .chart-row {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 32px;
-        width: 100%;
-        justify-content: space-between;
+        display: flex; /* Flexbox layout */
+        gap: 24px; /* Space between charts */
+        margin-bottom: 32px; /* Bottom spacing */
+        width: 100%; /* Full width */
+        justify-content: space-between; /* Even distribution */
       }
+
+      /* Half-width chart containers for side-by-side layout */
       .chart-half {
-        flex: 1;
-        width: calc(50% - 10px);
-        background: #f4f8fb;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        padding: 20px;
-        min-height: 380px;
-        overflow: visible;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-sizing: border-box;
+        flex: 1; /* Equal flex growth */
+        width: calc(50% - 12px); /* Half width minus gap compensation */
+        background: linear-gradient(145deg, #f4f8fb 0%, #fafcff 100%); /* Matching gradient */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06),
+          0 1px 4px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8); /* Multi-layer shadows */
+        padding: 24px; /* Internal spacing */
+        min-height: 380px; /* Consistent minimum height */
+        overflow: visible; /* Allows chart overflow */
+        display: flex; /* Flexbox for content alignment */
+        flex-direction: column; /* Vertical stacking */
+        align-items: center; /* Centers content horizontally */
+        box-sizing: border-box; /* Includes padding in width calculation */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+        transition: all 0.3s ease; /* Smooth hover transitions */
+        position: relative; /* For pseudo-element positioning */
       }
+
+      /* Decorative top border for half-width chart containers */
+      .chart-half::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #2c5282, transparent); /* Different color gradient */
+        border-radius: 12px 12px 0 0; /* Rounded top corners */
+      }
+
+      /* Hover effect for half-width chart containers */
+      .chart-half:hover {
+        transform: translateY(-6px); /* Lifts container up */
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12),
+          0 8px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8); /* Enhanced shadows */
+      }
+
+      /* Introduction section with special styling */
       .section-intro {
-        background: #e8f4f8;
-        padding: 16px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        border-left: 4px solid #1a4d80;
+        background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%); /* Light blue gradient */
+        padding: 20px 24px; /* Internal spacing */
+        border-radius: 12px; /* Rounded corners */
+        margin-bottom: 24px; /* Bottom spacing */
+        border-left: 4px solid #1a4d80; /* Accent border */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6); /* Layered shadows */
+        position: relative; /* For pseudo-element positioning */
+        overflow: hidden; /* Hides overflow from pseudo-element */
       }
-      .section-intro p {
-        margin: 0;
-        color: #2d3748;
-        line-height: 1.6;
-      }
-      .chart-half h3 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      #flight_map, #bubble_chart, #timeline_chart, #scatter_chart, #stacked_area_chart, #punctuality_chart {
+
+      /* Decorative radial gradient overlay for introduction section */
+      .section-intro::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: auto;
+        height: 100%;
+        background: radial-gradient(
+          circle at top right,
+          rgba(26, 77, 128, 0.03) 0%,
+          transparent 70%
+        ); /* Subtle radial highlight */
+        pointer-events: none; /* Doesn't interfere with text selection */
       }
+
+      /* Introduction text styling */
+      .section-intro p {
+        margin: 0; /* Removes default margins */
+        color: #2d3748; /* Dark gray text */
+        line-height: 1.6; /* Improved readability */
+        position: relative; /* Above pseudo-element */
+        z-index: 1;
+      }
+
+      /* Chart titles with gradient text effect */
+      .chart-half h3 {
+        margin-top: 0; /* Removes top margin */
+        margin-bottom: 20px; /* Bottom spacing */
+        text-align: center; /* Centers text */
+        background: linear-gradient(135deg, #2c5282, #1a4d80); /* Gradient background */
+        -webkit-background-clip: text; /* Clips background to text (WebKit) */
+        -webkit-text-fill-color: transparent; /* Makes text transparent (WebKit) */
+        background-clip: text; /* Clips background to text (Standard) */
+        font-weight: 700; /* Bold text */
+      }
+
+      /* Chart elements with fade-in animation */
+      #flight_map,
+      #bubble_chart,
+      #timeline_chart,
+      #scatter_chart,
+      #stacked_area_chart,
+      #punctuality_chart {
+        width: 100%; /* Full width of container */
+        height: auto; /* Maintains aspect ratio */
+        opacity: 0; /* Starts invisible */
+        animation: fadeIn 0.6s ease-out 0.4s both; /* Delayed fade-in animation */
+      }
+
+      /* Fade-in animation keyframes */
+      @keyframes fadeIn {
+        from {
+          opacity: 0; /* Starts invisible */
+        }
+        to {
+          opacity: 1; /* Ends fully visible */
+        }
+      }
+
+      /* Decorative border effect for main container */
+      .container::before {
+        content: "";
+        position: absolute;
+        top: -2px; /* Slightly outside container */
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #1a4d80, #4a90c2, #1a4d80); /* Gradient border */
+        border-radius: 18px; /* Slightly larger radius */
+        z-index: -1; /* Behind main container */
+        opacity: 0.1; /* Very subtle effect */
+      }
+
+      /* Responsive design for tablets and smaller screens */
       @media (max-width: 1200px) {
         .container {
-          max-width: 95%;
-          padding: 20px;
+          max-width: 95%; /* Reduces width on smaller screens */
+          padding: 20px; /* Reduces padding */
         }
         .chart-half {
-          width: 100%;
-          margin-bottom: 20px;
+          width: 100%; /* Full width on smaller screens */
+          margin-bottom: 20px; /* Adds bottom margin */
         }
         .chart-row {
-          flex-direction: column;
-          gap: 0;
+          flex-direction: column; /* Stacks charts vertically */
+          gap: 0; /* Removes gap between stacked items */
         }
       }
+
+      /* Responsive design for mobile devices */
       @media (max-width: 900px) {
         .container {
-          padding: 16px 4vw 24px 4vw;
+          padding: 16px 4vw 24px 4vw; /* Viewport-based padding */
         }
-        #flight_map, #bubble_chart, #timeline_chart, #scatter_chart, #stacked_area_chart, #punctuality_chart {
-          padding: 12px;
-          min-height: 350px;
+        /* Reduces chart dimensions on mobile */
+        #flight_map,
+        #bubble_chart,
+        #timeline_chart,
+        #scatter_chart,
+        #stacked_area_chart,
+        #punctuality_chart {
+          padding: 12px; /* Reduced padding */
+          min-height: 350px; /* Smaller minimum height */
         }
         .chart-container {
-          padding: 12px;
-          min-height: 350px;
+          padding: 12px; /* Reduced padding */
+          min-height: 350px; /* Smaller minimum height */
         }
         .chart-half {
-          padding: 12px;
-          min-height: 350px;
+          padding: 12px; /* Reduced padding */
+          min-height: 350px; /* Smaller minimum height */
         }
       }
     </style>
+  </head>
 
-</head>
-  
   <body>
+    <!-- Main container for the entire dashboard -->
     <div class="container">
-    <h1>Australian Domestic Flights: On-Time Performance and Key Statistics</h1>
+      <!-- Primary dashboard title -->
+      <h1>
+        Australian Domestic Flights: On-Time Performance and Key Statistics
+      </h1>
 
-    <!-- Overview Section -->
-    <div class="section-intro">
-      <p>This dashboard explores Australian domestic flight performance from 2004-2024, analyzing route networks, punctuality trends, and operational statistics across major cities. Interactive visualizations reveal patterns in flight volumes, on-time performance, and the impact of external factors like COVID-19.</p>
+      <!-- Introduction section explaining the dashboard purpose -->
+      <div class="section-intro">
+        <p>
+          This dashboard explores Australian domestic flight performance from
+          2004-2024, analyzing route networks, punctuality trends, and
+          operational statistics across major cities. Interactive visualizations
+          reveal patterns in flight volumes, on-time performance, and the impact
+          of external factors like COVID-19.
+        </p>
+      </div>
+
+      <!-- First main section: Network and routing analysis -->
+      <h2>Flight Network & Route Analysis</h2>
+
+      <!-- Geographic visualization of flight routes -->
+      <h3>Route Network Map</h3>
+      <div class="chart-container" id="flight_map"></div>
+
+      <!-- Row containing two side-by-side charts for volume analysis -->
+      <div class="chart-row">
+        <!-- Left chart: Bubble chart showing flight volumes by city -->
+        <div class="chart-half">
+          <h3>Flight Volume by City</h3>
+          <div id="bubble_chart"></div>
+        </div>
+        <!-- Right chart: Stacked area chart showing route distribution over time -->
+        <div class="chart-half">
+          <h3>Route Distribution</h3>
+          <div id="stacked_area_chart"></div>
+        </div>
+      </div>
+
+      <!-- Second main section: Performance and punctuality analysis -->
+      <h2>On-Time Performance Analysis</h2>
+
+      <!-- Timeline visualization showing performance trends -->
+      <h3>Performance Trends Over Time</h3>
+      <div class="chart-container" id="timeline_chart"></div>
+
+      <!-- Row containing two side-by-side charts for detailed performance analysis -->
+      <div class="chart-row">
+        <!-- Left chart: Scatter plot correlating performance with distance -->
+        <div class="chart-half">
+          <h3>Performance vs Distance</h3>
+          <div id="scatter_chart"></div>
+        </div>
+        <!-- Right chart: Bar chart showing punctuality by specific routes -->
+        <div class="chart-half">
+          <h3>Punctuality by Route</h3>
+          <div id="punctuality_chart"></div>
+        </div>
+      </div>
     </div>
-
-    <!-- Network and Volume Analysis -->
-    <h2>Flight Network & Route Analysis</h2>
-    
-    <h3>Route Network Map</h3>
-    <div class="chart-container" id="flight_map"></div>
-    
-    <div class="chart-row">
-      <div class="chart-half">
-        <h3>Flight Volume by City</h3>
-        <div id="bubble_chart"></div>
-      </div>
-      <div class="chart-half">
-        <h3>Route Distribution</h3>
-        <div id="stacked_area_chart"></div>
-      </div>
-    </div>
-
-    <!-- Performance Analysis -->
-    <h2>On-Time Performance Analysis</h2>
-    
-    <h3>Performance Trends Over Time</h3>
-    <div class="chart-container" id="timeline_chart"></div>
-    
-    <div class="chart-row">
-      <div class="chart-half">
-        <h3>Performance vs Distance</h3>
-        <div id="scatter_chart"></div>
-      </div>
-      <div class="chart-half">
-        <h3>Punctuality by Route</h3>
-        <div id="punctuality_chart"></div>
-      </div>
-    </div>
-
-  </div>
   </body>
-
-  </html>
+</html>
