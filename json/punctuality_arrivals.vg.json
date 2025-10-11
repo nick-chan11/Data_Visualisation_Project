@@ -34,6 +34,10 @@
         "labels": ["Arrivals", "Departures"],
         "name": "Change between Departures/Arrivals: "
       }
+    },
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "mouseover"}
     }
   ],
 
@@ -60,7 +64,11 @@
       "as": "Status_Label"
     }
   ],
-  "mark": "bar",
+  "mark": {
+    "type": "bar",
+    "cornerRadiusTopLeft": 3,
+    "cornerRadiusTopRight": 3
+  },
   "encoding": {
     "x": {
       "field": "Arriving_Port",
@@ -78,7 +86,31 @@
       "field": "Status_Label",
       "type": "nominal",
       "title": "Status",
-      "scale": { "range": ["#1f77b4", "#ff7f0e"] }
+      "scale": { 
+        "domain": ["On Time", "Delayed"],
+        "range": ["#1f77b4", "#ff7f0e"] 
+      }
+    },
+    "opacity": {
+      "condition": {
+        "param": "highlight",
+        "value": 1.0
+      },
+      "value": 0.3
+    },
+    "stroke": {
+      "condition": {
+        "param": "highlight",
+        "value": "black"
+      },
+      "value": null
+    },
+    "strokeWidth": {
+      "condition": {
+        "param": "highlight",
+        "value": 0.5
+      },
+      "value": 0
     },
     "tooltip": [
       { "field": "Arriving_Port", "type": "nominal", "title": "Airport/City" },
