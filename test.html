@@ -273,6 +273,43 @@
         }
       }
 
+      /* Text content containers for explanations */
+      .text-container {
+        background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+        padding: 20px 24px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 3px solid #4a90c2;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        color: #2d3748;
+        line-height: 1.6;
+        font-size: 0.95em;
+      }
+
+      .text-container h4 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        color: #1a4d80;
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      .text-container p {
+        margin: 0;
+      }
+
+      /* Small inline text boxes for specific chart explanations */
+      .chart-explanation {
+        background: rgba(244, 248, 251, 0.7);
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin: 12px 0;
+        border-left: 2px solid #2c5282;
+        font-size: 0.9em;
+        color: #2d3748;
+        line-height: 1.5;
+      }
+
       /* Decorative border effect for main container */
       .container::before {
         content: "";
@@ -352,9 +389,20 @@
       <!-- First main section: Network and routing analysis -->
       <h2>Flight Network & Route Analysis</h2>
 
+      <!-- Explanatory text for the network analysis section -->
+      <div class="text-container">
+        <h4>Understanding Australia's Flight Network</h4>
+        <p>[Space for detailed explanation of how the network analysis reveals patterns in Australian domestic aviation, including hub cities, route concentrations, and geographic distribution of flight services.]</p>
+      </div>
+
       <!-- Geographic visualization of flight routes -->
       <h3>Route Network Map</h3>
       <div class="chart-container" id="flight_map"></div>
+      
+      <!-- Explanation specific to the map visualization -->
+      <div class="chart-explanation">
+        <p>[Space for explanation of map features, what the lines and points represent, how to interpret the visualization, and key insights about route networks.]</p>
+      </div>
 
       <!-- Row containing two side-by-side charts for volume analysis -->
       <div class="chart-row">
@@ -362,20 +410,39 @@
         <div class="chart-half">
           <h3>Flight Volume by City</h3>
           <div id="bubble_chart"></div>
+          <!-- Small explanation for bubble chart -->
+          <div class="chart-explanation">
+            <p>[Space for bubble chart interpretation guide and key findings about city-based flight volumes.]</p>
+          </div>
         </div>
         <!-- Right chart: Stacked area chart showing route distribution over time -->
         <div class="chart-half">
           <h3>Route Distribution</h3>
           <div id="stacked_area_chart"></div>
+          <!-- Small explanation for area chart -->
+          <div class="chart-explanation">
+            <p>[Space for area chart explanation covering temporal trends and route distribution patterns.]</p>
+          </div>
         </div>
       </div>
 
       <!-- Second main section: Performance and punctuality analysis -->
       <h2>On-Time Performance Analysis</h2>
 
+      <!-- Explanatory text for the performance analysis section -->
+      <div class="text-container">
+        <h4>Analyzing Flight Punctuality and Performance Metrics</h4>
+        <p>[Space for comprehensive explanation of on-time performance metrics, factors affecting punctuality, and how these visualizations help understand operational efficiency across the Australian aviation network.]</p>
+      </div>
+
       <!-- Timeline visualization showing performance trends -->
       <h3>Performance Trends Over Time</h3>
       <div class="chart-container" id="timeline_chart"></div>
+      
+      <!-- Explanation specific to the timeline visualization -->
+      <div class="chart-explanation">
+        <p>[Space for timeline chart interpretation, explaining trends, seasonal patterns, and significant events that may have impacted performance.]</p>
+      </div>
 
       <!-- Row containing two side-by-side charts for detailed performance analysis -->
       <div class="chart-row">
@@ -383,12 +450,26 @@
         <div class="chart-half">
           <h3>Performance vs Distance</h3>
           <div id="scatter_chart"></div>
+          <!-- Small explanation for scatter plot -->
+          <div class="chart-explanation">
+            <p>[Space for scatter plot analysis explaining the relationship between route distance and on-time performance.]</p>
+          </div>
         </div>
         <!-- Right chart: Bar chart showing punctuality by specific routes -->
         <div class="chart-half">
           <h3>Punctuality by Route</h3>
           <div id="punctuality_chart"></div>
+          <!-- Small explanation for punctuality chart -->
+          <div class="chart-explanation">
+            <p>[Space for punctuality chart interpretation covering route-specific performance insights and comparative analysis.]</p>
+          </div>
         </div>
+      </div>
+
+      <!-- Concluding insights section -->
+      <div class="text-container">
+        <h4>Key Insights and Implications</h4>
+        <p>[Space for summary of key findings, implications for travelers and industry, and conclusions drawn from the comprehensive analysis of Australian domestic flight performance.]</p>
       </div>
     </div>
   </body>
