@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 600,
+  "width": 1000,
   "height": 350,
   "title": "Frequency of Domestic Flights across Australia in 2024",
   "projection": {"type": "mercator", "center": [134, -25]},

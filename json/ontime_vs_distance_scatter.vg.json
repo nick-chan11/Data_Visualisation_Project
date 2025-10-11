@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 350,
-  "height": 300,
+  "height": 450,
   "title": "Australian Domestic Flight On-Time Performance vs Route Distance",
   "data": {
     "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"

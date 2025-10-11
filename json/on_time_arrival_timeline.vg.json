@@ -75,7 +75,8 @@
           "field": "Year",
           "type": "quantitative",
           "title": "Year",
-          "scale": { "domain": { "param": "brush" } }
+          "scale": { "domain": { "param": "brush" } },
+          "axis": { "format": "d" }
         },
         "y": {
           "field": "AvgOnTimePerformance",
@@ -133,7 +134,8 @@
         "x": {
           "field": "Year",
           "type": "quantitative",
-          "title": "Year"
+          "title": "Year",
+          "axis": { "format": "d" }
         },
         "y": {
           "field": "AvgOnTimePerformance",
