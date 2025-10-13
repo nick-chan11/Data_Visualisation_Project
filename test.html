@@ -264,7 +264,10 @@
       #timeline_chart,
       #scatter_chart,
       #stacked_area_chart,
-      #punctuality_chart {
+      #punctuality_chart,
+      #airline_performance,
+      #seasonal_heatmap,
+      #cancellation_analysis {
         width: 100%; /* Full width of container */
         height: auto; /* Maintains aspect ratio */
         opacity: 0; /* Starts invisible */
@@ -411,6 +414,7 @@
       
       <!-- Explanation specific to the map visualization -->
       <div class="chart-explanation">
+        <strong>Lines Tell Stories: Thicker = Busier Routes</strong>
         <p>Flight paths are represented by lines connecting cities, with thickness indicating frequency. Hover over routes to see specific flight counts. Notice how Melbourne-Sydney forms the busiest corridor, while regional centers like Darwin and Hobart show more limited connectivity patterns reflecting Australia's population distribution.</p>
       </div>
 
@@ -422,6 +426,7 @@
           <div id="bubble_chart"></div>
           <!-- Small explanation for bubble chart -->
           <div class="chart-explanation">
+            <strong>COVID's Impact: Watch Flight Volumes Plummet</strong>
             <p>Circle size represents total outgoing departures from each city. Use the year selector to observe how COVID-19 dramatically reduced flight volumes in 2020-2021, with Sydney and Melbourne showing the most significant drops during lockdowns.</p>
           </div>
         </div>
@@ -431,6 +436,7 @@
           <div id="stacked_area_chart"></div>
           <!-- Small explanation for area chart -->
           <div class="chart-explanation">
+            <strong>City Spotlight: Discover Route Patterns & Seasonal Shifts</strong>
             <p>Select a focus city to see its outgoing flight distribution over time. Melbourne shows consistent diversity in destinations, while smaller cities like Hobart have more concentrated route patterns. The temporal slider reveals seasonal fluctuations and major disruptions.</p>
           </div>
         </div>
@@ -451,6 +457,7 @@
       
       <!-- Explanation specific to the timeline visualization -->
       <div class="chart-explanation">
+        <strong>20 Years in Motion: The Pandemic Paradox</strong>
         <p>Track performance trends across 20+ years of data. Notice the dramatic improvements during 2020-2021 when reduced traffic volumes led to exceptional on-time rates. Select individual cities to compare regional performance patterns and identify seasonal variations in punctuality.</p>
       </div>
 
@@ -462,6 +469,7 @@
           <div id="scatter_chart"></div>
           <!-- Small explanation for scatter plot -->
           <div class="chart-explanation">
+            <strong>Surprising Truth: Short Flights Aren't Always Fastest</strong>
             <p>Explore the relationship between route distance and punctuality. Interestingly, very short routes (under 500km) sometimes show lower on-time rates due to air traffic congestion at major hubs, while medium-distance routes often perform best.</p>
           </div>
         </div>
@@ -471,9 +479,53 @@
           <div id="punctuality_chart"></div>
           <!-- Small explanation for punctuality chart -->
           <div class="chart-explanation">
+            <strong>Stack It Up: On-Time vs Delayed Battle</strong>
             <p>Compare on-time vs delayed proportions across different cities. Use the year slider to see how performance varies annually, and hover over segments to highlight specific performance categories. The stacked format clearly shows the balance between punctual and delayed operations.</p>
           </div>
         </div>
+      </div>
+
+      <!-- Third main section: Operational efficiency and airline analysis -->
+      <h2>Operational Efficiency & Airline Performance</h2>
+
+      <!-- Explanatory text for the operational analysis section -->
+      <div class="text-container">
+        <h4>Comparing Airlines and Understanding Operational Patterns</h4>
+        <p>Beyond overall network performance, individual airlines show distinct operational characteristics. This section reveals how different carriers perform against industry benchmarks, seasonal variations that affect the entire network, and reliability metrics including cancellation patterns. These insights help passengers choose airlines and understand when disruptions are most likely to occur across the Australian domestic market.</p>
+      </div>
+
+      <!-- Row containing airline performance and seasonal analysis -->
+      <div class="chart-row">
+        <!-- Left chart: Airline performance comparison -->
+        <div class="chart-half">
+          <h3>Airline Performance Rankings</h3>
+          <div id="airline_performance"></div>
+          <!-- Small explanation for airline performance -->
+          <div class="chart-explanation">
+            <strong>Battle of the Brands: Who Delivers Best?</strong>
+            <p>Compare on-time performance across major Australian airlines. Use the year slider to see how competitive dynamics have evolved, especially during COVID-19 when reduced schedules allowed some airlines to achieve exceptional performance rates.</p>
+          </div>
+        </div>
+        <!-- Right chart: Seasonal performance heatmap -->
+        <div class="chart-half">
+          <h3>Seasonal Performance Patterns</h3>
+          <div id="seasonal_heatmap"></div>
+          <!-- Small explanation for seasonal heatmap -->
+          <div class="chart-explanation">
+            <strong>Calendar Insights: When to Fly for Best Results</strong>
+            <p>Darker blues indicate better performance periods. Notice how summer months often show reduced punctuality due to weather and increased travel demand, while winter typically offers more reliable service across the network.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flight reliability analysis -->
+      <h3>Flight Reliability: Cancellation Trends</h3>
+      <div class="chart-container" id="cancellation_analysis"></div>
+      
+      <!-- Explanation specific to cancellation analysis -->
+      <div class="chart-explanation">
+        <strong>Reliability Check: When Flights Don't Happen</strong>
+        <p>Track cancellation rates over time to understand operational reliability. The dramatic spike during 2020-2021 reflects COVID-19 border closures and lockdowns, while normal years show how external factors like weather and industrial action affect service reliability.</p>
       </div>
 
       <!-- Concluding insights section -->

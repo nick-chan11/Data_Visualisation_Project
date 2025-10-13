@@ -1,0 +1,96 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "text": {"font": "Segoe UI, Arial, sans-serif"},
+    "axis": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "title": {"font": "Segoe UI, Arial, sans-serif"}
+  },
+  "width": 350,
+  "height": 300,
+  "title": "Airline Performance Rankings - On-Time Arrival Rates",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
+  },
+  "params": [
+    {
+      "name": "YearSelect",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2025,
+        "step": 1,
+        "name": "Year: "
+      }
+    },
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "mouseover"}
+    }
+  ],
+  "transform": [
+    {"filter": "datum.Year == YearSelect"},
+    {"filter": "datum.Airline != 'All Airlines'"},
+    {
+      "aggregate": [
+        {"op": "sum", "field": "Arrivals_On_Time", "as": "TotalOnTime"},
+        {"op": "sum", "field": "Sectors_Flown", "as": "TotalFlights"}
+      ],
+      "groupby": ["Airline"]
+    },
+    {
+      "calculate": "datum.TotalOnTime / datum.TotalFlights",
+      "as": "OnTimeRate"
+    },
+    {
+      "calculate": "format(datum.OnTimeRate, '.1%')",
+      "as": "OnTimeRateFormatted"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "cornerRadiusEnd": 4,
+    "opacity": 0.8
+  },
+  "encoding": {
+    "y": {
+      "field": "Airline",
+      "type": "nominal",
+      "title": "Airline",
+      "sort": {"field": "OnTimeRate", "order": "descending"}
+    },
+    "x": {
+      "field": "OnTimeRate",
+      "type": "quantitative",
+      "title": "On-Time Performance Rate",
+      "scale": {"domain": [0, 1]},
+      "axis": {"format": ".0%"}
+    },
+    "color": {
+      "field": "Airline",
+      "type": "nominal",
+      "scale": {
+        "range": ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"]
+      },
+      "legend": null
+    },
+    "opacity": {
+      "condition": {"param": "highlight", "value": 1.0},
+      "value": 0.7
+    },
+    "stroke": {
+      "condition": {"param": "highlight", "value": "#2c5282"},
+      "value": "transparent"
+    },
+    "strokeWidth": {
+      "condition": {"param": "highlight", "value": 2},
+      "value": 0
+    },
+    "tooltip": [
+      {"field": "Airline", "type": "nominal", "title": "Airline"},
+      {"field": "OnTimeRateFormatted", "type": "nominal", "title": "On-Time Rate"},
+      {"field": "TotalFlights", "type": "quantitative", "title": "Total Flights", "format": ","}
+    ]
+  }
+}

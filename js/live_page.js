@@ -30,3 +30,18 @@ var vg_6 = "json/punctuality_arrivals.vg.json";
 vegaEmbed("#punctuality_chart", vg_6).then(function(result) {
 }).catch(console.error);
 
+// Airline Performance Comparison
+var vg_7 = "json/airline_performance_comparison.vg.json";
+vegaEmbed("#airline_performance", vg_7).then(function(result) {
+}).catch(console.error);
+
+// Seasonal Performance Heatmap
+var vg_8 = "json/seasonal_performance_heatmap.vg.json";
+vegaEmbed("#seasonal_heatmap", vg_8).then(function(result) {
+}).catch(console.error);
+
+// Cancellation Analysis
+var vg_9 = "json/cancellation_analysis.vg.json";
+vegaEmbed("#cancellation_analysis", vg_9).then(function(result) {
+}).catch(console.error);
+

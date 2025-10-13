@@ -1,0 +1,84 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "text": {"font": "Segoe UI, Arial, sans-serif"},
+    "axis": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
+    "title": {"font": "Segoe UI, Arial, sans-serif"}
+  },
+  "width": 350,
+  "height": 300,
+  "title": "Seasonal Performance Patterns - Monthly On-Time Rates",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
+  },
+  "params": [
+    {
+      "name": "YearRange",
+      "value": [2015, 2024],
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2025,
+        "step": 1,
+        "name": "Year Range: "
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "datum.Airline == 'All Airlines'"},
+    {"filter": "datum.Year >= YearRange[0] && datum.Year <= YearRange[1]"},
+    {
+      "aggregate": [
+        {"op": "sum", "field": "Arrivals_On_Time", "as": "TotalOnTime"},
+        {"op": "sum", "field": "Sectors_Flown", "as": "TotalFlights"}
+      ],
+      "groupby": ["Year", "Month_Num"]
+    },
+    {
+      "calculate": "datum.TotalOnTime / datum.TotalFlights",
+      "as": "OnTimeRate"
+    },
+    {
+      "calculate": "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.Month_Num - 1]",
+      "as": "MonthName"
+    }
+  ],
+  "mark": {
+    "type": "rect",
+    "stroke": "white",
+    "strokeWidth": 1
+  },
+  "encoding": {
+    "x": {
+      "field": "MonthName",
+      "type": "ordinal",
+      "title": "Month",
+      "sort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    },
+    "y": {
+      "field": "Year",
+      "type": "ordinal",
+      "title": "Year"
+    },
+    "color": {
+      "field": "OnTimeRate",
+      "type": "quantitative",
+      "title": "On-Time Rate",
+      "scale": {
+        "scheme": "blues",
+        "domain": [0.6, 1.0]
+      },
+      "legend": {
+        "format": ".0%",
+        "title": "On-Time Rate"
+      }
+    },
+    "tooltip": [
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {"field": "MonthName", "type": "nominal", "title": "Month"},
+      {"field": "OnTimeRate", "type": "quantitative", "title": "On-Time Rate", "format": ".1%"},
+      {"field": "TotalFlights", "type": "quantitative", "title": "Total Flights", "format": ","}
+    ]
+  }
+}
