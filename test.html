@@ -126,7 +126,7 @@
         padding: 24px; /* Internal spacing */
         min-height: 420px; /* Minimum height for consistency */
         width: 100%; /* Full width of parent */
-        overflow: visible; /* Allows chart overflow if needed */
+        overflow: hidden; /* Prevents content overflow */
         display: flex; /* Flexbox for centering */
         justify-content: center; /* Centers content horizontally */
         align-items: center; /* Centers content vertically */
@@ -269,6 +269,7 @@
       #seasonal_heatmap,
       #cancellation_analysis {
         width: 100%; /* Full width of container */
+        max-width: 100%; /* Prevents overflow */
         height: auto; /* Maintains aspect ratio */
         opacity: 0; /* Starts invisible */
         animation: fadeIn 0.6s ease-out 0.4s both; /* Delayed fade-in animation */
@@ -512,7 +513,7 @@
           <div id="seasonal_heatmap"></div>
           <!-- Small explanation for seasonal heatmap -->
           <div class="chart-explanation">
-            <strong>Calendar Insights: When to Fly for Best Results</strong>
+            <strong>Calendar Insights: When to Fly and Who to Fly with for Best Results</strong>
             <p>Darker blues indicate better performance periods. Notice how summer months often show reduced punctuality due to weather and increased travel demand, while winter typically offers more reliable service across the network.</p>
           </div>
         </div>

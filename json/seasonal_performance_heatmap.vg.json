@@ -14,20 +14,22 @@
   },
   "params": [
     {
-      "name": "YearRange",
-      "value": [2015, 2024],
+      "name": "AirlineFilter",
+      "value": "All Airlines",
       "bind": {
-        "input": "range",
-        "min": 2004,
-        "max": 2025,
-        "step": 1,
-        "name": "Year Range: "
+        "input": "select",
+        "options": ["All Airlines", "Qantas", "Virgin Australia", "Jetstar", "QantasLink", "Regional Express"],
+        "name": "Airline: "
       }
+    },
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "mouseover"}
     }
   ],
   "transform": [
-    {"filter": "datum.Airline == 'All Airlines'"},
-    {"filter": "datum.Year >= YearRange[0] && datum.Year <= YearRange[1]"},
+    {"filter": "datum.Airline == AirlineFilter"},
+    {"filter": "datum.Year >= 2015"},
     {
       "aggregate": [
         {"op": "sum", "field": "Arrivals_On_Time", "as": "TotalOnTime"},
@@ -47,7 +49,8 @@
   "mark": {
     "type": "rect",
     "stroke": "white",
-    "strokeWidth": 1
+    "strokeWidth": 1,
+    "cursor": "pointer"
   },
   "encoding": {
     "x": {
@@ -73,6 +76,18 @@
         "format": ".0%",
         "title": "On-Time Rate"
       }
+    },
+    "opacity": {
+      "condition": {"param": "highlight", "value": 1.0},
+      "value": 0.3
+    },
+    "stroke": {
+      "condition": {"param": "highlight", "value": "#2c5282"},
+      "value": "white"
+    },
+    "strokeWidth": {
+      "condition": {"param": "highlight", "value": 1},
+      "value": 1
     },
     "tooltip": [
       {"field": "Year", "type": "ordinal", "title": "Year"},

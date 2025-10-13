@@ -6,9 +6,8 @@
     "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
-  "width": 700,
-  "height": 300,
   "title": "Flight Reliability: Cancellation Rates Over Time",
+  "spacing": 15,
   "data": {
     "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
   },
@@ -23,79 +22,143 @@
       }
     }
   ],
-  "transform": [
-    {"filter": "datum.Airline == 'All Airlines'"},
-    {"filter": "CityFilter == 'All' || datum.Departing_Port == CityFilter"},
-    {
-      "aggregate": [
-        {"op": "sum", "field": "Sectors_Scheduled", "as": "TotalScheduled"},
-        {"op": "sum", "field": "Cancellations", "as": "TotalCancellations"},
-        {"op": "sum", "field": "Sectors_Flown", "as": "TotalFlown"}
-      ],
-      "groupby": ["Year"]
-    },
-    {
-      "calculate": "datum.TotalCancellations / datum.TotalScheduled",
-      "as": "CancellationRate"
-    },
-    {
-      "calculate": "datum.TotalFlown / datum.TotalScheduled",
-      "as": "CompletionRate"
+  "resolve": {
+    "scale": {
+      "x": "shared"
     }
-  ],
-  "layer": [
+  },
+  "vconcat": [
     {
+      "width": 1000,
+      "height": 200,
+      "transform": [
+        {"filter": "datum.Airline == 'All Airlines'"},
+        {"filter": "CityFilter == 'All' || datum.Departing_Port == CityFilter"},
+        {
+          "aggregate": [
+            {"op": "sum", "field": "Sectors_Scheduled", "as": "TotalScheduled"},
+            {"op": "sum", "field": "Cancellations", "as": "TotalCancellations"},
+            {"op": "sum", "field": "Sectors_Flown", "as": "TotalFlown"}
+          ],
+          "groupby": ["Year"]
+        },
+        {
+          "calculate": "datum.TotalCancellations / datum.TotalScheduled",
+          "as": "CancellationRate"
+        },
+        {
+          "calculate": "datum.TotalFlown / datum.TotalScheduled",
+          "as": "CompletionRate"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "area",
+            "opacity": 0.6,
+            "interpolate": "monotone"
+          },
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "quantitative",
+              "title": "Year",
+              "scale": { "domain": { "param": "brush" } },
+              "axis": { "format": "d" }
+            },
+            "y": {
+              "field": "CancellationRate",
+              "type": "quantitative",
+              "title": "Cancellation Rate",
+              "scale": {"domain": [0, 0.08]},
+              "axis": {"format": ".1%"}
+            },
+            "color": {"value": "#3498db"},
+            "tooltip": [
+              {"field": "Year", "type": "quantitative", "title": "Year"},
+              {"field": "CancellationRate", "type": "quantitative", "title": "Cancellation Rate", "format": ".2%"},
+              {"field": "TotalCancellations", "type": "quantitative", "title": "Total Cancellations", "format": ","},
+              {"field": "TotalScheduled", "type": "quantitative", "title": "Total Scheduled", "format": ","}
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "line",
+            "strokeWidth": 3,
+            "interpolate": "monotone"
+          },
+          "encoding": {
+            "x": {"field": "Year", "type": "quantitative"},
+            "y": {"field": "CancellationRate", "type": "quantitative"},
+            "color": {"value": "#2980b9"}
+          }
+        },
+        {
+          "mark": {
+            "type": "circle",
+            "size": 100,
+            "opacity": 0.9
+          },
+          "encoding": {
+            "x": {"field": "Year", "type": "quantitative"},
+            "y": {"field": "CancellationRate", "type": "quantitative"},
+            "color": {"value": "#2c3e50"},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 2},
+            "tooltip": [
+              {"field": "Year", "type": "quantitative", "title": "Year"},
+              {"field": "CancellationRate", "type": "quantitative", "title": "Cancellation Rate", "format": ".2%"},
+              {"field": "TotalCancellations", "type": "quantitative", "title": "Total Cancellations", "format": ","},
+              {"field": "TotalScheduled", "type": "quantitative", "title": "Total Scheduled", "format": ","}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "width": 1000,
+      "height": 50,
+      "transform": [
+        {"filter": "datum.Airline == 'All Airlines'"},
+        {"filter": "CityFilter == 'All' || datum.Departing_Port == CityFilter"},
+        {
+          "aggregate": [
+            {"op": "sum", "field": "Sectors_Scheduled", "as": "TotalScheduled"},
+            {"op": "sum", "field": "Cancellations", "as": "TotalCancellations"},
+            {"op": "sum", "field": "Sectors_Flown", "as": "TotalFlown"}
+          ],
+          "groupby": ["Year"]
+        },
+        {
+          "calculate": "datum.TotalCancellations / datum.TotalScheduled",
+          "as": "CancellationRate"
+        }
+      ],
       "mark": {
         "type": "area",
-        "opacity": 0.6,
-        "interpolate": "monotone"
+        "opacity": 0.5
       },
+      "params": [
+        {
+          "name": "brush",
+          "select": {"type": "interval", "encodings": ["x"]}
+        }
+      ],
       "encoding": {
         "x": {
           "field": "Year",
-          "type": "ordinal",
-          "title": "Year"
+          "type": "quantitative",
+          "title": "Brush to zoom",
+          "axis": { "format": "d" }
         },
         "y": {
           "field": "CancellationRate",
           "type": "quantitative",
-          "title": "Cancellation Rate",
-          "scale": {"domain": [0, 0.1]},
-          "axis": {"format": ".1%"}
+          "title": "Rate",
+          "axis": { "format": ".1%" }
         },
-        "color": {"value": "#ff7f0e"},
-        "tooltip": [
-          {"field": "Year", "type": "ordinal", "title": "Year"},
-          {"field": "CancellationRate", "type": "quantitative", "title": "Cancellation Rate", "format": ".2%"},
-          {"field": "TotalCancellations", "type": "quantitative", "title": "Total Cancellations", "format": ","},
-          {"field": "TotalScheduled", "type": "quantitative", "title": "Total Scheduled", "format": ","}
-        ]
-      }
-    },
-    {
-      "mark": {
-        "type": "line",
-        "strokeWidth": 3,
-        "interpolate": "monotone"
-      },
-      "encoding": {
-        "x": {"field": "Year", "type": "ordinal"},
-        "y": {"field": "CancellationRate", "type": "quantitative"},
-        "color": {"value": "#d62728"}
-      }
-    },
-    {
-      "mark": {
-        "type": "circle",
-        "size": 60,
-        "opacity": 0.8
-      },
-      "encoding": {
-        "x": {"field": "Year", "type": "ordinal"},
-        "y": {"field": "CancellationRate", "type": "quantitative"},
-        "color": {"value": "#d62728"},
-        "stroke": {"value": "white"},
-        "strokeWidth": {"value": 2}
+        "color": {"value": "#95a5a6"}
       }
     }
   ]
