@@ -108,7 +108,7 @@
       }
     },
     {
-      "width": 800,
+      "width": 1000,
       "height": 80,
       "transform": [
         {
@@ -140,7 +140,7 @@
         "x": {
           "field": "Year",
           "type": "quantitative",
-          "title": "Year",
+          "title": "Brush to Zoom",
           "axis": { "format": "d" }
         },
         "y": {
