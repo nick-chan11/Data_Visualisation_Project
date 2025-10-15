@@ -1,84 +1,812 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for proper encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
+    <!-- Vega-Lite visualization libraries for interactive charts -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
-    
-    <script src="js/w10_hwk.js"></script>
-    
-    <title>FIT3179 Week 10 Homework</title>
+
+    <!-- Custom JavaScript file to embed all visualization charts -->
+    <script src="js/live_page.js"></script>
+
+    <title>FIT3179 A2 - Australian Flight Analytics Dashboard</title>
     <style>
+      /* Import Google Fonts for modern typography */
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+      
+      /* Global CSS variables for consistent theming */
+      :root {
+        --primary-blue: #0066cc;
+        --primary-blue-dark: #004499;
+        --secondary-blue: #3399ff;
+        --accent-orange: #ff6b35;
+        --accent-green: #00b894;
+        --accent-teal: #2dd4bf;
+        --neutral-100: #f8fafc;
+        --neutral-200: #e2e8f0;
+        --neutral-300: #cbd5e1;
+        --neutral-400: #94a3b8;
+        --neutral-500: #64748b;
+        --neutral-600: #475569;
+        --neutral-700: #334155;
+        --neutral-800: #1e293b;
+        --neutral-900: #0f172a;
+        --gradient-primary: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Global body styling with animated background */
       body {
-          font-family: 'Segoe UI', Arial, sans-serif;
-          background: #f7f9fa;
-          margin: 0;
-          padding: 0;
-          color: #222;
-        }
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        background: linear-gradient(-45deg, #e2e8f0, #cbd5e1, #94a3b8, #64748b);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        margin: 0;
+        padding: 0;
+        color: var(--neutral-800);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Animated background gradient */
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* Floating particles background effect */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 100px 100px, 150px 150px;
+        animation: float 20s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-20px) rotate(1deg); }
+        66% { transform: translateY(-10px) rotate(-1deg); }
+      }
+
+      /* Main header styling with advanced effects */
       h1 {
         text-align: center;
-        margin-top: 32px;
-        font-size: 2.5em;
-        color: #1a4d80;
-        letter-spacing: 1px;
+        margin-top: 40px;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        color: #ffffff;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7), 
+                     0 0 20px rgba(0, 0, 0, 0.5),
+                     1px 1px 0 rgba(0, 0, 0, 0.8);
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 2;
+        background: rgba(15, 23, 42, 0.3);
+        padding: 24px 32px;
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
+
+      /* Enhanced animation keyframes */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Main container with glassmorphism effect */
       .container {
-        max-width: 1100px;
-        margin: 40px auto;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-        padding: 32px 40px 40px 40px;
+        max-width: 1400px;
+        margin: 50px auto 80px auto;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: var(--shadow-xl), 
+                    0 8px 32px rgba(0, 0, 0, 0.12),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        padding: 48px 56px 64px 56px;
+        animation: fadeInUp 0.8s ease-out 0.3s both;
+        position: relative;
+        overflow: hidden;
       }
+
+      /* Decorative elements for container */
+      .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        border-radius: 24px 24px 0 0;
+      }
+
+      .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 30s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      /* Section headers with modern styling */
       h2 {
-        color: #1a4d80;
-        margin-top: 36px;
+        color: rgba(255, 255, 255, 0.95);
+        margin-top: 48px;
+        margin-bottom: 24px;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 700;
+        position: relative;
+        overflow: hidden;
+        padding: 16px 24px;
+        background: var(--gradient-primary);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        animation: slideInLeft 0.8s ease-out;
+      }
+
+      /* Animated background for section headers */
+      h2::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+          transparent, 
+          rgba(255, 255, 255, 0.2), 
+          transparent);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0% { left: -100%; }
+        50% { left: 100%; }
+        100% { left: 100%; }
+      }
+
+      /* Chart section titles */
+      h3 {
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 32px;
         margin-bottom: 16px;
-        font-size: 1.5em;
-        border-bottom: 2px solid #e0e7ef;
-        padding-bottom: 6px;
-      }
-      #flight_map, #bubble_chart {
-        margin: 0 auto 32px auto;
-        background: #f4f8fb;
+        font-size: clamp(1.1rem, 3vw, 1.4rem);
+        font-weight: 600;
+        position: relative;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        padding: 16px;
-        min-height: 480px;
-        max-width: 900px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
       }
+
+      h3:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+
+      /* Modern chart containers with glassmorphism */
+      .chart-container {
+        margin: 0 auto 40px auto;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: var(--shadow-lg),
+                    0 8px 32px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        padding: 32px;
+        min-height: 480px;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      /* Decorative gradient border */
+      .chart-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        border-radius: 16px 16px 0 0;
+      }
+
+      /* Enhanced hover effect */
+      .chart-container:hover {
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: var(--shadow-xl),
+                    0 25px 50px rgba(0, 0, 0, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+
+      /* Enhanced flexbox row for charts */
+      .chart-row {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 40px;
+        width: 100%;
+        justify-content: space-between;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+      }
+
+      /* Modern half-width chart containers */
+      .chart-half {
+        flex: 1;
+        width: calc(50% - 16px);
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: var(--shadow-lg),
+                    0 8px 32px rgba(0, 0, 0, 0.08),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        padding: 28px;
+        min-height: 420px;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      /* Staggered animation for chart halves */
+      .chart-half:first-child {
+        animation: slideInLeft 0.8s ease-out 0.5s both;
+      }
+
+      .chart-half:last-child {
+        animation: slideInRight 0.8s ease-out 0.7s both;
+      }
+
+      /* Decorative border for half charts */
+      .chart-half::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        border-radius: 16px 16px 0 0;
+      }
+
+      /* Enhanced hover effect for half charts */
+      .chart-half:hover {
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: var(--shadow-xl),
+                    0 25px 50px rgba(0, 0, 0, 0.12),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+
+      /* Modern introduction section */
+      .section-intro {
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        padding: 32px 36px;
+        border-radius: 16px;
+        margin-bottom: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: var(--shadow-lg),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+      }
+
+      /* Animated gradient overlay */
+      .section-intro::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.1) 50%, 
+          transparent 100%);
+        animation: slideAcross 4s ease-in-out infinite;
+      }
+
+      @keyframes slideAcross {
+        0% { left: -100%; }
+        50% { left: 100%; }
+        100% { left: 100%; }
+      }
+
+      /* Enhanced introduction text */
+      .section-intro p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.95);
+        line-height: 1.7;
+        font-size: 1.1rem;
+        font-weight: 400;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Chart titles with enhanced styling */
+      .chart-half h3 {
+        margin-top: 0;
+        margin-bottom: 24px;
+        text-align: center;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        font-size: 1.25rem;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+      }
+
+      /* Chart elements with enhanced animations */
+      #flight_map,
+      #bubble_chart,
+      #timeline_chart,
+      #scatter_chart,
+      #stacked_area_chart,
+      #punctuality_chart,
+      #airline_performance,
+      #seasonal_heatmap,
+      #cancellation_analysis {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        opacity: 0;
+        animation: chartFadeIn 1s ease-out 0.8s both;
+        transition: transform 0.3s ease;
+      }
+
+      /* Enhanced chart animation */
+      @keyframes chartFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Chart hover effects */
+      #flight_map:hover,
+      #bubble_chart:hover,
+      #timeline_chart:hover,
+      #scatter_chart:hover,
+      #stacked_area_chart:hover,
+      #punctuality_chart:hover,
+      #airline_performance:hover,
+      #seasonal_heatmap:hover,
+      #cancellation_analysis:hover {
+        transform: scale(1.02);
+      }
+
+      /* Modern text containers */
+      .text-container {
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 28px 32px;
+        border-radius: 12px;
+        margin: 28px 0;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: var(--shadow-md),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.95);
+        line-height: 1.7;
+        font-size: 1rem;
+        position: relative;
+        animation: fadeInUp 0.6s ease-out 0.5s both;
+      }
+
+      .text-container h4 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        color: rgba(255, 255, 255, 0.98);
+        font-size: 1.2rem;
+        font-weight: 600;
+        background: var(--gradient-secondary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .text-container p {
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Enhanced chart explanations */
+      .chart-explanation {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 16px 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: var(--shadow-sm);
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.95);
+        line-height: 1.6;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .chart-explanation:hover {
+        background: rgba(15, 23, 42, 0.9);
+        transform: translateX(8px);
+      }
+
+      .chart-explanation strong {
+        color: rgba(255, 255, 255, 0.98);
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 600;
+      }
+
+      /* Enhanced responsive design */
+      @media (max-width: 1400px) {
+        .container {
+          max-width: 95%;
+          padding: 40px 48px 56px 48px;
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .container {
+          max-width: 95%;
+          padding: 32px 40px 48px 40px;
+        }
+        .chart-half {
+          width: 100%;
+          margin-bottom: 24px;
+        }
+        .chart-row {
+          flex-direction: column;
+          gap: 24px;
+        }
+      }
+
       @media (max-width: 900px) {
         .container {
-          padding: 16px 4vw 24px 4vw;
+          padding: 24px 5vw 40px 5vw;
+          margin: 20px auto 40px auto;
         }
-        #flight_map, #bubble_chart {
-          padding: 4vw;
+        
+        h1 {
+          font-size: clamp(1.8rem, 6vw, 2.5rem);
+          margin-top: 20px;
+        }
+        
+        h2 {
+          font-size: clamp(1.3rem, 5vw, 1.8rem);
+          padding: 12px 20px;
+          margin-top: 32px;
+        }
+        
+        .chart-container,
+        .chart-half {
+          padding: 20px;
           min-height: 320px;
         }
+        
+        .chart-row {
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px 4vw 32px 4vw;
+          border-radius: 16px;
+        }
+        
+        .chart-container,
+        .chart-half {
+          padding: 16px;
+          min-height: 280px;
+          border-radius: 12px;
+        }
+        
+        .text-container,
+        .section-intro {
+          padding: 20px 24px;
+          border-radius: 10px;
+        }
+      }
+
+      /* Loading spinner for charts */
+      .chart-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-left-color: var(--accent-orange);
+        border-radius: 50%;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
       }
     </style>
+  </head>
 
-</head>
-  
   <body>
+    <!-- Main container for the entire dashboard -->
     <div class="container">
-    <h1>Nicholas Chan 33115737 - Week 10 Homework</h1>
+      <!-- Primary dashboard title with enhanced styling -->
+      <h1>
+        Australian Aviation Analytics: 
+        <span style="display: block; font-size: 0.7em; margin-top: 8px; font-weight: 600;">
+          Exploring Two Decades of Flight Performance & Network Dynamics
+        </span>
+      </h1>
 
-    <h2>Flight Network</h2>
-    <div id="flight_map"></div>
+      <!-- Introduction section explaining the dashboard purpose -->
+      <div class="section-intro">
+        <p>
+          <strong>Welcome to Australia's most comprehensive flight analytics dashboard.</strong> 
+          This interactive exploration spans over 20 years of Australian domestic aviation data (2004-2024), 
+          uncovering the intricate patterns of route networks, punctuality trends, and operational excellence 
+          across the continent's vast airspace. From the bustling Sydney-Melbourne corridor to remote regional 
+          connections, dive deep into the data that reveals how geography, economics, and global events like 
+          COVID-19 have shaped one of the world's most unique aviation markets.
+        </p>
+      </div>
 
-    <h2>Departures Bubble Chart</h2>
-    <div id="bubble_chart"></div>
+      <!-- First main section: Network and routing analysis -->
+      <h2>Flight Network & Route Intelligence</h2>
 
-    <!--
-    ADD MORE SECTIONS HERE
-    -->
-  </div>
+      <!-- Explanatory text for the network analysis section -->
+      <div class="text-container">
+        <h4>Decoding Australia's Complex Flight Web</h4>
+        <p>Australia's domestic aviation network is a fascinating study in geographical constraints and economic optimization. The hub-and-spoke pattern centered around major capital cities reflects both population distribution and the tyranny of distance that defines the continent. Sydney and Melbourne serve as the dual powerhouses, processing millions of passengers annually, while Perth acts as the isolated western gateway. This network analysis reveals not just flight patterns, but the economic lifelines connecting Australia's dispersed population centers across one of the world's most challenging aviation environments.</p>
+      </div>
+
+      <!-- Geographic visualization of flight routes -->
+      <h3>Route Network Map</h3>
+      <div class="chart-container" id="flight_map"></div>
+      
+      <!-- Explanation specific to the map visualization -->
+      <div class="chart-explanation">
+        <strong>Lines Tell Stories: Thicker = Busier Routes</strong>
+        <p>Flight paths are represented by lines connecting cities, with thickness indicating frequency. Hover over routes to see specific flight counts. Notice how Melbourne-Sydney forms the busiest corridor, while regional centers like Darwin and Hobart show more limited connectivity patterns reflecting Australia's population distribution.</p>
+      </div>
+
+      <!-- Row containing two side-by-side charts for volume analysis -->
+      <div class="chart-row">
+        <!-- Left chart: Bubble chart showing flight volumes by city -->
+        <div class="chart-half">
+          <h3>Flight Volume by City</h3>
+          <div id="bubble_chart"></div>
+          <!-- Small explanation for bubble chart -->
+          <div class="chart-explanation">
+            <strong>COVID's Impact: Watch Flight Volumes Plummet</strong>
+            <p>Circle size represents total outgoing departures from each city. Use the year selector to observe how COVID-19 dramatically reduced flight volumes in 2020-2021, with Sydney and Melbourne showing the most significant drops during lockdowns.</p>
+          </div>
+        </div>
+        <!-- Right chart: Stacked area chart showing route distribution over time -->
+        <div class="chart-half">
+          <h3>Route Distribution</h3>
+          <div id="stacked_area_chart"></div>
+          <!-- Small explanation for area chart -->
+          <div class="chart-explanation">
+            <strong>City Spotlight: Discover Route Patterns & Seasonal Shifts</strong>
+            <p>Select a focus city to see its outgoing flight distribution over time. Melbourne shows consistent diversity in destinations, while smaller cities like Hobart have more concentrated route patterns. The temporal slider reveals seasonal fluctuations and major disruptions.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second main section: Performance and punctuality analysis -->
+      <h2>Performance Analytics & Punctuality Patterns</h2>
+
+      <!-- Explanatory text for the performance analysis section -->
+      <div class="text-container">
+        <h4>The Science of On-Time Performance</h4>
+        <p>Punctuality in aviation is both an art and a science, reflecting complex interactions between weather patterns, air traffic management, operational efficiency, and passenger expectations. Australian domestic flights typically achieve 70-85% on-time rates, but this headline figure masks fascinating variations across routes, seasons, and airlines. Our temporal analysis spans over two decades, capturing the industry's evolution through technological leaps, infrastructure investments, and black swan events like COVID-19, which paradoxically delivered the highest punctuality rates in aviation history through dramatically reduced air traffic.</p>
+      </div>
+
+      <!-- Timeline visualization showing performance trends -->
+      <h3>Performance Trends Over Time</h3>
+      <div class="chart-container" id="timeline_chart"></div>
+      
+      <!-- Explanation specific to the timeline visualization -->
+      <div class="chart-explanation">
+        <strong>20 Years in Motion: The Pandemic Paradox</strong>
+        <p>Track performance trends across 20+ years of data. Notice the dramatic improvements during 2020-2021 when reduced traffic volumes led to exceptional on-time rates. Select individual cities to compare regional performance patterns and identify seasonal variations in punctuality.</p>
+      </div>
+
+      <!-- Row containing two side-by-side charts for detailed performance analysis -->
+      <div class="chart-row">
+        <!-- Left chart: Scatter plot correlating performance with distance -->
+        <div class="chart-half">
+          <h3>Performance vs Distance</h3>
+          <div id="scatter_chart"></div>
+          <!-- Small explanation for scatter plot -->
+          <div class="chart-explanation">
+            <strong>Surprising Truth: Short Flights Aren't Always Fastest</strong>
+            <p>Explore the relationship between route distance and punctuality. Interestingly, very short routes (under 500km) sometimes show lower on-time rates due to air traffic congestion at major hubs, while medium-distance routes often perform best.</p>
+          </div>
+        </div>
+        <!-- Right chart: Bar chart showing punctuality by specific routes -->
+        <div class="chart-half">
+          <h3>Punctuality by Route</h3>
+          <div id="punctuality_chart"></div>
+          <!-- Small explanation for punctuality chart -->
+          <div class="chart-explanation">
+            <strong>Stack It Up: On-Time vs Delayed Battle</strong>
+            <p>Compare on-time vs delayed proportions across different cities. Use the year slider to see how performance varies annually, and hover over segments to highlight specific performance categories. The stacked format clearly shows the balance between punctual and delayed operations.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Third main section: Operational efficiency and airline analysis -->
+      <h2>Operational Excellence & Competitive Dynamics</h2>
+
+      <!-- Explanatory text for the operational analysis section -->
+      <div class="text-container">
+        <h4>Behind the Scenes: Airline Performance Benchmarking</h4>
+        <p>While passengers see only the boarding pass and arrival gate, airlines wage constant battles for operational supremacy across multiple performance dimensions. This section peels back the corporate veil to reveal how different carriers stack up against industry benchmarks, the seasonal rhythms that affect the entire network, and the reliability metrics that separate aviation leaders from laggards. From cancellation cascades to seasonal staffing challenges, these insights illuminate the operational chess game that determines whether your next flight departs on time.</p>
+      </div>
+
+      <!-- Row containing airline performance and seasonal analysis -->
+      <div class="chart-row">
+        <!-- Left chart: Airline performance comparison -->
+        <div class="chart-half">
+          <h3>Airline Performance Rankings</h3>
+          <div id="airline_performance"></div>
+          <!-- Small explanation for airline performance -->
+          <div class="chart-explanation">
+            <strong>Battle of the Brands: Who Delivers Best?</strong>
+            <p>Compare on-time performance across major Australian airlines. Use the year slider to see how competitive dynamics have evolved, especially during COVID-19 when reduced schedules allowed some airlines to achieve exceptional performance rates.</p>
+          </div>
+        </div>
+        <!-- Right chart: Seasonal performance heatmap -->
+        <div class="chart-half">
+          <h3>Seasonal Performance Patterns</h3>
+          <div id="seasonal_heatmap"></div>
+          <!-- Small explanation for seasonal heatmap -->
+          <div class="chart-explanation">
+            <strong>Calendar Insights: When to Fly and Who to Fly with for Best Results</strong>
+            <p>Darker blues indicate better performance periods. Notice how summer months often show reduced punctuality due to weather and increased travel demand, while winter typically offers more reliable service across the network.</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Flight reliability analysis -->
+      <h3>Flight Reliability: Cancellation Trends</h3>
+       <!-- Explanation specific to cancellation analysis -->
+      <div class="chart-explanation">
+        <strong>Reliability Check: When Flights Don't Happen</strong>
+        <p>Track cancellation rates over time to understand operational reliability. The dramatic spike during 2020-2021 reflects COVID-19 border closures and lockdowns, while normal years show how external factors like weather and industrial action affect service reliability.</p>
+      </div>
+
+      <div class="chart-container" id="cancellation_analysis"></div>
+      
+      <!-- Concluding insights section -->
+      <div class="text-container">
+        <h4>Key Insights and Future Implications</h4>
+        <p>The analysis reveals Australia's aviation network as highly centralized around major capitals, with Sydney-Melbourne forming the world's second-busiest domestic route. Performance metrics show steady improvements over time, interrupted but ultimately enhanced by the COVID-19 period. Distance correlates with performance in complex ways, suggesting operational efficiency varies by route type. For travelers, understanding these patterns can inform booking decisions, while industry stakeholders can identify opportunities for network optimization and service improvements in Australia's evolving aviation landscape.</p>
+      </div>
+
+      <!-- Dashboard footer -->
+      <div style="
+        margin-top: 48px; 
+        padding: 24px 0; 
+        border-top: 1px solid rgba(255, 255, 255, 0.2); 
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+      ">
+        <p style="margin: 0; line-height: 1.6;">
+          <strong>Nicholas Chan - Data Visualization Assignment 2</strong> | FIT3179 | Monash University<br>
+          Domestic Flights Interactive dashboard
+        </p>
+      </div>
+    </div>
   </body>
-
-  </html>
+</html>
