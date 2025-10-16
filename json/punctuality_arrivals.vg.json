@@ -7,7 +7,7 @@
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
   "width": 350,
-  "height": 410,
+  "height": 450,
   "title": "On-time Performance of Domestic Flights in Australia by Airport/City",
   "data": {
     "name": "otp_data",

@@ -2,46 +2,46 @@
 
 // Flight Path Map
 var vg_1 = "json/flight_path_map.vg.json";
-vegaEmbed("#flight_map", vg_1).then(function(result) {
+vegaEmbed("#flight_map", vg_1, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // Arrivals and Departures Bubble Chart
 var vg_2 = "json/arrivals_departures_bubble_chart.vg.json";
-vegaEmbed("#bubble_chart", vg_2).then(function(result) {
+vegaEmbed("#bubble_chart", vg_2, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // On-Time Performance Timeline
 var vg_3 = "json/on_time_arrival_timeline.vg.json";
-vegaEmbed("#timeline_chart", vg_3).then(function(result) {
+vegaEmbed("#timeline_chart", vg_3, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // On-Time vs Distance Scatter Plot
 var vg_4 = "json/ontime_vs_distance_scatter.vg.json";
-vegaEmbed("#scatter_chart", vg_4).then(function(result) {
+vegaEmbed("#scatter_chart", vg_4, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // Outgoing Flights Stacked Area
 var vg_5 = "json/otp_outgoing_flights_stacked_area.vg.json";
-vegaEmbed("#stacked_area_chart", vg_5).then(function(result) {
+vegaEmbed("#stacked_area_chart", vg_5, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // Punctuality Arrivals
 var vg_6 = "json/punctuality_arrivals.vg.json";
-vegaEmbed("#punctuality_chart", vg_6).then(function(result) {
+vegaEmbed("#punctuality_chart", vg_6, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // Airline Performance Comparison
 var vg_7 = "json/airline_performance_comparison.vg.json";
-vegaEmbed("#airline_performance", vg_7).then(function(result) {
+vegaEmbed("#airline_performance", vg_7, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // Seasonal Performance Heatmap
 var vg_8 = "json/seasonal_performance_heatmap.vg.json";
-vegaEmbed("#seasonal_heatmap", vg_8).then(function(result) {
+vegaEmbed("#seasonal_heatmap", vg_8, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
 // Cancellation Analysis
 var vg_9 = "json/cancellation_analysis.vg.json";
-vegaEmbed("#cancellation_analysis", vg_9).then(function(result) {
+vegaEmbed("#cancellation_analysis", vg_9, {"actions": false}).then(function(result) {
 }).catch(console.error);
 
