@@ -6,7 +6,7 @@
     "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
-  "width": 800,
+  "width": 1180,
   "height": 350,
   "title": "Frequency of Domestic Flights across Australia in 2024",
   "projection": {"type": "mercator", "center": [134, -25]},

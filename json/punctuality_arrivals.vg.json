@@ -6,7 +6,7 @@
     "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
-  "width": 350,
+  "width": 485,
   "height": 450,
   "title": "On-time Performance of Domestic Flights in Australia by Airport/City",
   "data": {
@@ -14,17 +14,6 @@
     "url": "https://raw.githubusercontent.com/ncha0085/FIT3179/refs/heads/main/data/otp_time_series_web.csv"
   },
   "params": [
-    {
-      "name": "YearSelect",
-      "value": 2025,
-      "bind": {
-        "input": "range",
-        "min": 2004,
-        "max": 2025,
-        "step": 1,
-        "name": "Year: "
-      }
-    },
     {
       "name": "PerfType",
       "value": "Arrivals",
@@ -38,6 +27,17 @@
     {
       "name": "highlight",
       "select": {"type": "point", "on": "mouseover"}
+    },
+    {
+      "name": "YearSelect",
+      "value": 2025,
+      "bind": {
+        "input": "range",
+        "min": 2004,
+        "max": 2025,
+        "step": 1,
+        "name": "Year: "
+      }
     }
   ],
 

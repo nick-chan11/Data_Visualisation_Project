@@ -29,7 +29,7 @@
   },
   "vconcat": [
     {
-      "width": 1000,
+      "width": 1260,
       "height": 200,
       "transform": [
         {"filter": "datum.Airline == 'All Airlines'"},
@@ -117,7 +117,7 @@
       ]
     },
     {
-      "width": 1000,
+      "width": 1260,
       "height": 50,
       "transform": [
         {"filter": "datum.Airline == 'All Airlines'"},

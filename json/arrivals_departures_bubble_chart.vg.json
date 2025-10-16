@@ -6,7 +6,7 @@
     "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
-  "width": 350,
+  "width": 460,
   "height": 300,
   "title": "Number of Outgoing Domestic Departures by City",
   "data": {

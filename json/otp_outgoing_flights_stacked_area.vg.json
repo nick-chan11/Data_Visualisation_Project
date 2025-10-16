@@ -6,7 +6,7 @@
     "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
-  "width": 350,
+  "width": 465,
   "height": 300,
   "title": "Outgoing Flight Sectors by Destination from Selected City",
   "data": {

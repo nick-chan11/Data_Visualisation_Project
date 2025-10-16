@@ -6,7 +6,7 @@
     "legend": {"labelFont": "Segoe UI, Arial, sans-serif", "titleFont": "Segoe UI, Arial, sans-serif"},
     "title": {"font": "Segoe UI, Arial, sans-serif"}
   },
-  "width": 350,
+  "width": 475,
   "height": 300,
   "title": "Seasonal Performance Patterns - Monthly On-Time Rates",
   "data": {
